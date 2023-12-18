@@ -3,17 +3,14 @@ project:
   output-dir: pages
 website:
   navbar:
-    background:    "#630031"
+    background: "#630031"
     foreground: "light"
     title: "BayesTPC"
     left:
       - text: "Home"
         href: index.html
-      - text: "Example 1"
-        href: example1.html
-      - text: "Example 2"
-        href: example2.html
-        
+      - text: "Examples"
+        href: examples.html
 format:
   html:
     theme: cosmo
