@@ -8,12 +8,12 @@ Here, we provide (insert final number) examples demonstrating the functionality 
 
 ## Example 1: Non-Linear Trait Data with Normally Distributed Errors.
 
-[Link](https://seansorek.github.io/bayesTPC/examples/pages/example1.html)
+[Link](https://seansorek.github.io/bayesTPC/pages/example1.html)
 
 In this example, we show the original and most common use case of `bayesTPC`: easily and intuitively fitting traits that vary non-linearly with temperature.
 
 ## Example 2: Count Data
 
-[Link](https://seansorek.github.io/bayesTPC/examples/pages/example2.html)
+[Link](https://seansorek.github.io/bayesTPC/pages/example2.html)
 
 In this example, we fit count or survivorship data against temperature. To minimize tedious data transformation, `bayesTPC` supports fitting this type of data as binomial, bernoulli, or poisson random variables.
