@@ -3,7 +3,7 @@ project:
   output-dir: pages
 website:
   navbar:
-    background: "#630031"
+    background: "#556B2F"
     foreground: "light"
     title: "BayesTPC"
     left:
