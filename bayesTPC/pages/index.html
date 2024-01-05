@@ -145,6 +145,15 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
    
   <ul>
   <li><a href="#installation" id="toc-installation" class="nav-link active" data-scroll-target="#installation">Installation</a></li>
+  <li><a href="#functionality" id="toc-functionality" class="nav-link" data-scroll-target="#functionality">Functionality</a>
+  <ul class="collapse">
+  <li><a href="#models" id="toc-models" class="nav-link" data-scroll-target="#models">Models</a></li>
+  <li><a href="#fitting" id="toc-fitting" class="nav-link" data-scroll-target="#fitting">Fitting</a></li>
+  <li><a href="#changing-and-specifying-models" id="toc-changing-and-specifying-models" class="nav-link" data-scroll-target="#changing-and-specifying-models">Changing and Specifying models</a></li>
+  <li><a href="#summaries" id="toc-summaries" class="nav-link" data-scroll-target="#summaries">Summaries</a></li>
+  <li><a href="#diagnostics" id="toc-diagnostics" class="nav-link" data-scroll-target="#diagnostics">Diagnostics</a></li>
+  <li><a href="#vectraits-api" id="toc-vectraits-api" class="nav-link" data-scroll-target="#vectraits-api">Vectraits API</a></li>
+  </ul></li>
   </ul>
 </nav>
     </div>
@@ -179,8 +188,71 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <h2 class="anchored" data-anchor-id="installation">Installation</h2>
 <p>You can install the development version of <strong>bayesTPC</strong> from <a href="https://github.com/">GitHub</a> with:</p>
 <div class="sourceCode" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a>remotes<span class="sc">::</span><span class="fu">install_github</span>(<span class="st">"johnwilliamsmithjr/bayesTPC"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</section>
+<section id="functionality" class="level2">
+<h2 class="anchored" data-anchor-id="functionality">Functionality</h2>
+<section id="models" class="level3">
+<h3 class="anchored" data-anchor-id="models">Models</h3>
+<p><code>bayesTPC</code> offers many pre-configured TPC models. We can use <code>get_models()</code>.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="fu">get_models</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code> [1] "poisson_glm_lin"    "poisson_glm_quad"   "binomial_glm_lin"  
+ [4] "binomial_glm_quad"  "bernoulli_glm_lin"  "bernoulli_glm_quad"
+ [7] "briere"             "gaussian"           "kamykowski"        
+[10] "pawar_shsch"        "quadratic"          "ratkowsky"         
+[13] "stinner"            "weibull"           </code></pre>
+</div>
+</div>
+<p>To see the exact specification of a particular model, we can use</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="fu">get_default_model_specification</span>(<span class="st">"briere"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>bayesTPC Model Specification of Type:
+  briere
+
+Model Formula:
+  m[i] &lt;- ( q * Temp * (Temp - T_min) * sqrt((T_max &gt; Temp) * abs(T_max - Temp)) * (T_max &gt; Temp) * (Temp &gt; T_min) )
+
+Model Distribution:
+  Trait[i] ~ T(dnorm(mean = m[i], tau = 1/sigma.sq), 0, )
+
+Model Parameters and Priors:
+  q ~ dunif(0, 1) 
+  T_max ~ dunif(25, 60) 
+  T_min ~ dunif(0, 24)
+
+Prior for Variance:
+  sigma.sq ~ dexp(1)</code></pre>
+</div>
+</div>
+<p>Use <code>get_formula()</code>, <code>get_default_priors()</code>, and <code>get_default_constants()</code> to display the individual components of a any model included in <code>bayesTPC</code>.</p>
+<p>For those with experience in fitting models in BUGS, <code>configure_model()</code> provides pre-formatted code.</p>
+</section>
+<section id="fitting" class="level3">
+<h3 class="anchored" data-anchor-id="fitting">Fitting</h3>
+<p>The fitting workhorse of <code>bayesTPC</code> is the <code>b_TPC()</code> function. With <code>b_TPC()</code>, a user only needs to specify the dataset and desired model and <code>bayesTPC</code> handles configuring and running an MCMC using <code>nimble</code>. The user can also change the model priors, the sampler used, and other hyperparameters of the MCMC.</p>
+</section>
+<section id="changing-and-specifying-models" class="level3">
+<h3 class="anchored" data-anchor-id="changing-and-specifying-models">Changing and Specifying models</h3>
+<p>One can also create their own models by specifying a formula and priors using <code>specify_model()</code>, along with its wrappers <code>specify_normal_model()</code> and <code>specify_binomial_model()</code>.</p>
+<p><code>bayesTPC</code> accepts both the name of a model and the model object itself as inputs to its workhorse functions. This provides two methods for users to customize existing models: providing customized priors and constants in the options of the functions themselves, or by storing the model object in the local environment and using the <code>change_priors()</code> and <code>change_constants()</code> functions. Note that since R objects are immutable, the modified models must be stored again.</p>
+</section>
+<section id="summaries" class="level3">
+<h3 class="anchored" data-anchor-id="summaries">Summaries</h3>
+<p>The fit object returned by <code>b_TPC()</code> have can be summarized in multiple ways. <code>summary()</code> gives a detailed summary of the MCMC results, and <code>plot()</code> shows the fit given by the center (mean or median) and bounding (95% quantiles or hdi) MCMC samples. Similarly, <code>posterior_predictive()</code> and <code>plot_prediction()</code> take samples of the posterior to predict new values.</p>
+</section>
+<section id="diagnostics" class="level3">
+<h3 class="anchored" data-anchor-id="diagnostics">Diagnostics</h3>
+<p><code>bayesTPC</code> provides multiple MCMC diagnostic plots. <code>traceplot()</code> wraps <code>coda::traceplot()</code> and shows the sampled values by sequential iteration. <code>bayesTPC_ipairs()</code> wraps <code>IDPmisc::ipairs()</code> and shows the pairwise joint posterior distributions of all model parameters. These wrappers are provided for convenience.</p>
+<p>The <code>ppo_plot()</code> function shows the overlap between the priors specified versus a kernel density estimation of the posterior sample.</p>
+</section>
+<section id="vectraits-api" class="level3">
+<h3 class="anchored" data-anchor-id="vectraits-api">Vectraits API</h3>
+<p><code>bayesTPC</code> also includes a basic API to access the Vectraits database of disease vector trait data. One can either retrieve a pre-known dataset using <code>get_dataset()</code> or <code>get_datasets()</code>, or search specific keywords using <code>find_datasets()</code>.</p>
 
 
+</section>
 </section>
 
 </main> <!-- /main -->
