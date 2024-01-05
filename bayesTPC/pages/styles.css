@@ -172,8 +172,7 @@ code span.fu, code span.kw {
 }
 
 div.sourceCode {
-   margin-top: 8px;
-   margin-bottom: 8px;
+  margin: 0;
 }
 
 pre, d-article pre {
