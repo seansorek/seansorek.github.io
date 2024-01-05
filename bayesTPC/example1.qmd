@@ -1,8 +1,0 @@
----
-title: "`bayesTPC` Example 1: Non-Linear Data with Normally Distributed Errors"
-author: "Sean Sorek"
-format: html
-editor: visual
----
-
-This is the first of 4(5?) examples demonstrating the functionality of `bayesTPC`. On this page, we will show how to fit a non-linear model with (plausibly) normally distributed errors.

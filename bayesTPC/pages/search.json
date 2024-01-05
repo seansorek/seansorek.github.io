@@ -1,31 +1,24 @@
 [
   {
-    "objectID": "index.html",
-    "href": "index.html",
-    "title": "bayesTPC: An accessible interface to fit Bayesian thermal performance curves in R.",
+    "objectID": "intro.html",
+    "href": "intro.html",
+    "title": "Introduction to bayesTPC",
     "section": "",
-    "text": "bayesTPC is an R package to help conveniently fit common thermal performance models using Bayesian MCMC. We provide functionality to substitute for or supplement BUGS modelling workflows, especially for those without experience in Bayesian methods. To this end, bayesTPC contains a simple model specification format, BUGS configuration helpers, end-to-end model fitting methods, and model diagnostics."
+    "text": "On this page, we will show how to use bayesTPC to fit basic TPCs."
   },
   {
-    "objectID": "index.html#installation",
-    "href": "index.html#installation",
-    "title": "bayesTPC: An accessible interface to fit Bayesian thermal performance curves in R.",
-    "section": "Installation",
-    "text": "Installation\nYou can install the development version of bayesTPC from GitHub with:\nremotes::install_github(\"johnwilliamsmithjr/bayesTPC\")"
+    "objectID": "intro.html#loading-and-exploring-data",
+    "href": "intro.html#loading-and-exploring-data",
+    "title": "Introduction to bayesTPC",
+    "section": "Loading and exploring data",
+    "text": "Loading and exploring data\n\nlibrary(nimble)\n\nnimble version 1.0.1 is loaded.\nFor more information on NIMBLE and a User Manual,\nplease visit https://R-nimble.org.\n\nNote for advanced users who have written their own MCMC samplers:\n  As of version 0.13.0, NIMBLE's protocol for handling posterior\n  predictive nodes has changed in a way that could affect user-defined\n  samplers in some situations. Please see Section 15.5.1 of the User Manual.\n\n\n\nAttaching package: 'nimble'\n\n\nThe following object is masked from 'package:stats':\n\n    simulate\n\nlibrary(bayesTPC)\ndata &lt;- get_dataset(107)\n\nThanks to Vectraits’ standardized column naming, we can learn about our data through subsetting columns.\n\n# Traits measured\nunique(data$OriginalTraitName)\n\n[1] \"development rate\"\n\n# Species\nunique(data$Interactor1)\n\n[1] \"Myzus persicae\"\n\n# Does the data come from the lab or the field?\nunique(data$LabField)\n\n[1] \"laboratory\"\n\n# life stage of organism measured\nunique(data$Interactor1Stage)\n\n[1] \"juvenile\"\n\n# Unit of data\nunique(data$OriginalTraitUnit)\n\n[1] \"days-1\"\n\n\nFrom our exploration, we now know that we are fitting development rate in days for juvenile Myzus persicae measured in the lab. A full list of all possible data features and their definitions is available on the Vectraits website."
   },
   {
-    "objectID": "example2.html",
-    "href": "example2.html",
-    "title": "bayesTPC Example 2: Count Data",
-    "section": "",
-    "text": "This is the second example demonstrating the functionality of bayesTPC. We will be assuming the reader has already has familiarity with the content covered in example 1. If you do not recognize a function, and it is not explicitly introduced, please refer back to example 1 for more information."
-  },
-  {
-    "objectID": "example1.html",
-    "href": "example1.html",
-    "title": "bayesTPC Example 1: Non-Linear Data with Normally Distributed Errors",
-    "section": "",
-    "text": "This is the first of 4(5?) examples demonstrating the functionality of bayesTPC. On this page, we will show how to fit a non-linear model with (plausibly) normally distributed errors."
+    "objectID": "intro.html#observations",
+    "href": "intro.html#observations",
+    "title": "Introduction to bayesTPC",
+    "section": "Observations",
+    "text": "Observations\nTo access the observations and their respective temperatures, we look at these columns:\n\nhead(data$OriginalTraitValue)\n\n[1] 0.059 0.128 0.129 0.150 0.162 0.156\n\nhead(data$Interactor1Temp)\n\n[1] 13.0 18.9 20.1 22.9 27.1 29.9\n\n\nTo fit using bayesTPC, we have to format our traits and temperatures into a named list.\n\ndata_list &lt;- list(Trait = data$OriginalTraitValue, Temp = data$Interactor1Temp)\nplot(data_list$Trait ~ data_list$Temp)"
   },
   {
     "objectID": "examples.html",
@@ -47,5 +40,26 @@
     "title": "bayesTPC Examples",
     "section": "Example 2: Count Data",
     "text": "Example 2: Count Data\nLink\nIn this example, we fit count or survivorship data against temperature. To minimize tedious data transformation, bayesTPC supports fitting this type of data as binomial, bernoulli, or poisson random variables."
+  },
+  {
+    "objectID": "example2.html",
+    "href": "example2.html",
+    "title": "bayesTPC Example 2: Count Data",
+    "section": "",
+    "text": "This is the second example demonstrating the functionality of bayesTPC. We will be assuming the reader has already has familiarity with the content covered in example 1. If you do not recognize a function, and it is not explicitly introduced, please refer back to example 1 for more information."
+  },
+  {
+    "objectID": "index.html",
+    "href": "index.html",
+    "title": "bayesTPC: An accessible interface to fit Bayesian thermal performance curves in R.",
+    "section": "",
+    "text": "bayesTPC is an R package to help conveniently fit common thermal performance models using Bayesian MCMC. We provide functionality to substitute for or supplement BUGS modelling workflows, especially for those without experience in Bayesian methods. To this end, bayesTPC contains a simple model specification format, BUGS configuration helpers, end-to-end model fitting methods, and model diagnostics."
+  },
+  {
+    "objectID": "index.html#installation",
+    "href": "index.html#installation",
+    "title": "bayesTPC: An accessible interface to fit Bayesian thermal performance curves in R.",
+    "section": "Installation",
+    "text": "Installation\nYou can install the development version of bayesTPC from GitHub with:\nremotes::install_github(\"johnwilliamsmithjr/bayesTPC\")"
   }
 ]

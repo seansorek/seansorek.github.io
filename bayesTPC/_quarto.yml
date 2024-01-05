@@ -9,6 +9,8 @@ website:
     left:
       - text: "Home"
         href: index.html
+      - text: "Intro"
+        href: intro.html
       - text: "Examples"
         href: examples.html
 format:
