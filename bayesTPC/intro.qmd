@@ -2,17 +2,24 @@
 title: "Introduction to bayesTPC"
 # author: "Sean Sorek"
 format: html
+whitespace: small
 ---
 
 On this page, we will show how to use bayesTPC to fit basic TPCs.
 
-# The data
-This dataset comes from the paper *Effects of High and Fluctuating Temperatures on Myzus persicae* by Davis et. al. (10.1093/ee/35.6.1461). We can retrieve the data from the [Vectraits database](https://vectorbyte-qa.crc.nd.edu/vectraits-explorer) using the API built into bayesTPC.
+# Loading required packages
 
-## Loading and exploring data
 ```{r}
 library(nimble)
 library(bayesTPC)
+```
+
+# Exploring and formatting data
+
+This dataset comes from the paper *Effects of High and Fluctuating Temperatures on Myzus persicae* by Davis et. al. (10.1093/ee/35.6.1461). We can retrieve the data from the [Vectraits database](https://vectorbyte-qa.crc.nd.edu/vectraits-explorer) using the API built into bayesTPC.
+
+## Using Vectraits
+```{r}
 data <- get_dataset(107)
 ```
 
@@ -63,6 +70,8 @@ Here we can see the exact model formula, along with what distribution parameter 
 Now that we know what we have available, let's fit our data to the briere model.
 
 # Fitting
+
+## Default Models
 If the default model priors are satisfactory, fitting in `bayesTPC` can be done simply using `b_TPC()`.
 
 ```{r}
@@ -79,7 +88,7 @@ summary(fit1)
 
 Something doesn't look quite right. Our MAP estimate is the sample with the highest posterior probability, but it isn't even close to the mean and median of each parameter. This can suggest we haven't converged to the best fit. Thankfully, `bayesTPC` offers diagnostics to measure whether our model fits our data.
 
-# Diagnostics
+## Diagnostics
 
 The simplest diagnostic we can perform is to just plot our model.
 
@@ -98,7 +107,7 @@ If our model converged, we would see the parameters not move too much after an i
 
 
 
-# Modifying the fitting routine
+## Modifying the fitting routine
 
 Let's change our priors and set some reasonable initial values.
 
@@ -120,7 +129,7 @@ plot(fit2, temp_interval = seq(0, 35, length.out = 1000), legend_position = "top
 
 That looks a lot better! We have successfully fit a thermal performance curve using `bayesTPC`.
 
-# More plots
+## More plots
 
 Now let's explore more tools we can use to analyze our fits. First, let's look at how the distribution of our parameters has changed using `ppo_plot()`.
 
@@ -138,9 +147,10 @@ Here, we can see the relationships between our different parameters. Observe tha
 
 # Creating our own models
 
-what if we wanted to fit a model not included in `bayesTPC`?
+What if we wanted to fit a model not included in `bayesTPC`?
 
 Let's look at how the package defines the briere model.
+
 ```{r}
 get_default_model_specification("briere")
 ```
@@ -152,11 +162,13 @@ f(T) = \begin{cases} 0 &\mbox{if } T \leq T_0 \\
 q T (T-T_0) \sqrt[3]{T_m-T} & \mbox{if } T_0 < T <T_m \\
  0 &\mbox{if } T \geq T_m \end{cases}  
 $$
+
 ```{r}
 my_briere_formula <- expression(q * Temp * (Temp - T_min) * ((T_max > Temp) * abs(T_max - Temp))^(1/3) * (T_max > Temp) * (Temp > T_min))
 ```
 
 Now, we choose the priors we want to sample from. We'll include a little more flexibility here to ensure the model fits how we want it to.
+
 ```{r}
 my_briere_priors <- c(
   q = "dunif(0,.0003)",
@@ -175,12 +187,14 @@ my_briere <- specify_normal_model("my_briere", #model name
 ```
 
 Now we can use this model just like any other.
+
 ```{r}
 get_formula("my_briere")
 get_default_priors("my_briere")
 ```
 
 We can also pass the model object in, instead of just the name. For those who've created MCMC's using the BUGS language, `configure_model()` returns the BUGS model that will be trained.
+
 ```{r}
 cat(configure_model(my_briere))
 ```
@@ -192,6 +206,7 @@ fit3 <- b_TPC(data = data_list, model = "my_briere")
 ```
 
 Finally, we can run the same diagnostics as before. 
+
 ```{r}
 par(mfrow=c(2,2))
 traceplot(fit3)
@@ -208,9 +223,11 @@ bayesTPC_ipairs(fit3)
 # Model Selection
 
 `coda` lets us pull the Watanabe–Akaike information criterion (WAIC) from the models we've fit.
+
 ```{r}
 fit1$mcmc$getWAIC()
 fit2$mcmc$getWAIC()
 fit3$mcmc$getWAIC()
 ```
+
 It looks like the default briere model performed the best out of all three fits.
