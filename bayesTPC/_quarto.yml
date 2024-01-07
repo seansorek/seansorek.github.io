@@ -11,8 +11,6 @@ website:
         href: index.html
       - text: "Intro"
         href: intro.html
-      - text: "Examples"
-        href: examples.html
 format:
   html:
     theme: cosmo
