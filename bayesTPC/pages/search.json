@@ -4,7 +4,7 @@
     "href": "intro.html",
     "title": "Introduction to bayesTPC",
     "section": "",
-    "text": "On this page, we will show how to use bayesTPC to fit basic TPCs."
+    "text": "On this page, we will show how to use bayesTPC to fit basic TPCs. We assume familiarity with Bayesian model fitting and MCMCs for the sake of this demonstration."
   },
   {
     "objectID": "intro.html#using-vectraits",
@@ -18,7 +18,7 @@
     "href": "intro.html#observations",
     "title": "Introduction to bayesTPC",
     "section": "Observations",
-    "text": "Observations\nTo access the observations and their respective temperatures, we look at these columns:\n\nhead(data$OriginalTraitValue)\n\n[1] 0.059 0.128 0.129 0.150 0.162 0.156\n\nhead(data$Interactor1Temp)\n\n[1] 13.0 18.9 20.1 22.9 27.1 29.9\n\n\nTo fit using bayesTPC, we have to format our traits and temperatures into a named list.\n\ndata_list &lt;- list(Trait = data$OriginalTraitValue, Temp = data$Interactor1Temp)\nplot(data_list$Trait ~ data_list$Temp)"
+    "text": "Observations\nTo access the observations and their respective temperatures, we look at these columns:\n\nhead(data$OriginalTraitValue)\n\n[1] 0.059 0.128 0.129 0.150 0.162 0.156\n\nhead(data$Interactor1Temp)\n\n[1] 13.0 18.9 20.1 22.9 27.1 29.9\n\n\nTo fit using bayesTPC, we have to format our traits and temperatures into a named list.\n\ndata_list &lt;- list(Trait = data$OriginalTraitValue, Temp = data$Interactor1Temp)\nplot(data_list$Trait ~ data_list$Temp, ylab = \"Trait\", xlab = \"Temp\",\n     main = \"Trait vs Temperature\", pch = 16)"
   },
   {
     "objectID": "intro.html#default-models",

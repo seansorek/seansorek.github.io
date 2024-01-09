@@ -5,7 +5,7 @@ format: html
 whitespace: small
 ---
 
-On this page, we will show how to use bayesTPC to fit basic TPCs.
+On this page, we will show how to use bayesTPC to fit basic TPCs. We assume familiarity with Bayesian model fitting and MCMCs for the sake of this demonstration.
 
 # Loading required packages
 
@@ -50,7 +50,8 @@ head(data$Interactor1Temp)
 To fit using `bayesTPC`, we have to format our traits and temperatures into a named list.
 ```{r}
 data_list <- list(Trait = data$OriginalTraitValue, Temp = data$Interactor1Temp)
-plot(data_list$Trait ~ data_list$Temp)
+plot(data_list$Trait ~ data_list$Temp, ylab = "Trait", xlab = "Temp",
+     main = "Trait vs Temperature", pch = 16)
 ```
 
 # Models
@@ -231,3 +232,7 @@ fit3$mcmc$getWAIC()
 ```
 
 It looks like the default briere model performed the best out of all three fits.
+
+# Conclusion
+
+This introduction has showcased the basic functionality of bayesTPC and shows how to fit a basic thermal performance curve. Future examples will delve into fitting different kinds of models, best practices for fitting Bayesian TPCs, and more advanced features that `bayesTPC` provides. We hope you find it as useful and enjoyable to work with as we do and good luck on your model fitting adventures!

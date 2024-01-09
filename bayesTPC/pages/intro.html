@@ -157,6 +157,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   </ul></li>
   <li><a href="#creating-our-own-models" id="toc-creating-our-own-models" class="nav-link" data-scroll-target="#creating-our-own-models">Creating our own models</a></li>
   <li><a href="#model-selection" id="toc-model-selection" class="nav-link" data-scroll-target="#model-selection">Model Selection</a></li>
+  <li><a href="#conclusion" id="toc-conclusion" class="nav-link" data-scroll-target="#conclusion">Conclusion</a></li>
   </ul>
 </nav>
     </div>
@@ -180,7 +181,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 
 </header>
 
-<p>On this page, we will show how to use bayesTPC to fit basic TPCs.</p>
+<p>On this page, we will show how to use bayesTPC to fit basic TPCs. We assume familiarity with Bayesian model fitting and MCMCs for the sake of this demonstration.</p>
 <section id="loading-required-packages" class="level1">
 <h1>Loading required packages</h1>
 <div class="cell">
@@ -261,7 +262,8 @@ Attaching package: 'nimble'</code></pre>
 <p>To fit using <code>bayesTPC</code>, we have to format our traits and temperatures into a named list.</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb21"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a>data_list <span class="ot">&lt;-</span> <span class="fu">list</span>(<span class="at">Trait =</span> data<span class="sc">$</span>OriginalTraitValue, <span class="at">Temp =</span> data<span class="sc">$</span>Interactor1Temp)</span>
-<span id="cb21-2"><a href="#cb21-2" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(data_list<span class="sc">$</span>Trait <span class="sc">~</span> data_list<span class="sc">$</span>Temp)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb21-2"><a href="#cb21-2" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(data_list<span class="sc">$</span>Trait <span class="sc">~</span> data_list<span class="sc">$</span>Temp, <span class="at">ylab =</span> <span class="st">"Trait"</span>, <span class="at">xlab =</span> <span class="st">"Temp"</span>,</span>
+<span id="cb21-3"><a href="#cb21-3" aria-hidden="true" tabindex="-1"></a>     <span class="at">main =</span> <span class="st">"Trait vs Temperature"</span>, <span class="at">pch =</span> <span class="dv">16</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <p><img src="intro_files/figure-html/unnamed-chunk-5-1.png" class="img-fluid" width="672"></p>
 </div>
@@ -685,6 +687,10 @@ Field "pWAIC":
 </div>
 </div>
 <p>It looks like the default briere model performed the best out of all three fits.</p>
+</section>
+<section id="conclusion" class="level1">
+<h1>Conclusion</h1>
+<p>This introduction has showcased the basic functionality of bayesTPC and shows how to fit a basic thermal performance curve. Future examples will delve into fitting different kinds of models, best practices for fitting Bayesian TPCs, and more advanced features that <code>bayesTPC</code> provides. We hope you find it as useful and enjoyable to work with as we do and good luck on your model fitting adventures!</p>
 
 
 </section>
