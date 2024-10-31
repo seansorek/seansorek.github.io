@@ -124,10 +124,6 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     <a class="nav-link" href="./intro.html" rel="" target="">
  <span class="menu-text">Intro</span></a>
   </li>  
-  <li class="nav-item">
-    <a class="nav-link" href="./examples.html" rel="" target="">
- <span class="menu-text">Examples</span></a>
-  </li>  
 </ul>
             <div class="quarto-navbar-tools ms-auto">
 </div>
@@ -216,14 +212,12 @@ Model Formula:
 * (T_max &gt; Temp) * (Temp &gt; T_min) )
 
 Model Distribution:
-Trait[i] ~ T(dnorm(mean = m[i], tau = 1/sigma.sq), 0, )
+  Trait[i] ~ T(dnorm(mean = m[i], tau = 1/sigma.sq), 0, )
 
 Model Parameters and Priors:
-  q ~ dunif(0, 1) 
-  T_max ~ dunif(25, 60) 
-  T_min ~ dunif(0, 24)
-
-Prior for Variance:
+  q ~ dexp(1)
+  T_max ~ dunif(25, 60)
+  T_min ~ dunif(0, 20)
   sigma.sq ~ dexp(1)</code></pre>
 </div>
 </div>

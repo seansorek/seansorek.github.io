@@ -20,7 +20,7 @@ This dataset comes from the paper *Effects of High and Fluctuating Temperatures 
 
 ## Using Vectraits
 ```{r}
-data <- get_dataset(107)
+data <- get_VB_dataset(106)
 ```
 
 Thanks to Vectraits' standardized column naming, we can learn about our data through subsetting columns.
@@ -76,7 +76,6 @@ Now that we know what we have available, let's fit our data to the briere model.
 If the default model priors are satisfactory, fitting in `bayesTPC` can be done simply using `b_TPC()`.
 
 ```{r}
-#| cache: TRUE
 set.seed(1)
 fit1 <- b_TPC(data = data_list, model = "briere")
 fit1
@@ -114,7 +113,6 @@ If our model converged, we would see the parameters not move too much after an i
 Let's change our priors and set some reasonable initial values.
 
 ```{r}
-#| cache: TRUE
 fit2 <- b_TPC(data = data_list, model = "briere",
              priors = list(q = "dunif(0,.0003)",
                            T_min = "dunif(-5,10)",
@@ -140,10 +138,10 @@ Now let's explore more tools we can use to analyze our fits. First, let's look a
 ppo_plot(fit2)
 ```
 
-We can also look at the pairwise posterior joint distributions of our parameters using `bayesTPC_ipairs()`, which is a wrapper of `IDPmisc::ipairs()`.
+We can also look at the pairwise posterior joint distributions of our parameters using `ipairs()`, which is a wrapper of `IDPmisc::ipairs()`.
 
 ```{r}
-bayesTPC_ipairs(fit2)
+ipairs(fit2)
 ```
 
 Here, we can see the relationships between our different parameters. Observe that the minimum temperature and the scale parameter are strongly positively correlated. For a simple model, this isn't going to cause any fitting issues. If we're having trouble due to correlated parameters, we can change the sampling method used by modifying the `samplerType` option on `b_TPC()`. Currently, `bayesTPC` supports four samplers: a standard random walk "RW", a blocked random walk "RW_block", a slice sampler "slice", and an automated factor slice sampler "AF_slice". We recommend using "AF_slice" if model convergence becomes an issue, and using the default option otherwise.
@@ -205,7 +203,6 @@ cat(configure_model(my_briere))
 Now, let's train our briere model. 
 
 ```{r}
-#| cache: TRUE
 fit3 <- b_TPC(data = data_list, model = "my_briere")  
 ```
 
@@ -221,7 +218,7 @@ Good! Finally, let's look at our posterior distributions and see how well we fit
 ```{r}
 plot(fit3, temp_interval = seq(0, 35, length.out = 1000), legend_position = "topleft", burn = 2000)
 ppo_plot(fit3)
-bayesTPC_ipairs(fit3)
+ipairs(fit3)
 ```
 
 # Model Selection
