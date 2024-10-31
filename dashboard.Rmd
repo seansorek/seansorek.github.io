@@ -1,0 +1,77 @@
+---
+title: "Untitled"
+output: 
+  flexdashboard::flex_dashboard:
+    orientation: columns
+    vertical_layout: fill
+---
+
+```{r setup, include=FALSE}
+library(flexdashboard)
+library(tidyverse)
+library(p8105.datasets)
+library(plotly)
+```
+
+Column {data-width=650}
+-----------------------------------------------------------------------
+
+### Chart A
+
+```{r}
+instacart |>
+  group_by(department) |>
+  summarise(reordered = mean(reordered)) |>
+  arrange(desc(reordered)) |>
+  mutate(department = as.factor(department),
+         department = fct_reorder(department, reordered)) |>
+  plot_ly(x = ~department,
+          y = ~reordered,
+          color = ~department, type = "bar", colors = "viridis") |>
+  layout(title = "Percent Ordering a Product Again by Department",
+         xaxis = list(title = "Department"),
+         yaxis = list(title = "Percent Reordering"))
+```
+
+Column {data-width=350}
+-----------------------------------------------------------------------
+
+### Chart B
+
+```{r}
+instacart |> 
+  group_by(order_hour_of_day) |> 
+  summarise(count = n()) |>
+  plot_ly(x = ~order_hour_of_day, y = ~count, type = "scatter", mode = "lines") |>
+  layout(title = "Products Ordered per Hour",
+         xaxis = list(title = "Hour of the Day"),
+         yaxis = list(title = "Number of Orders"))
+```
+
+### Chart C
+
+```{r}
+# order size vs day of week
+set.seed(1)
+instacart |> 
+  select(order_id, order_dow) |>
+  group_by(order_id) |>
+  mutate(order_size = n()) |>
+  distinct() |> ungroup() |>
+  mutate(order_dow = factor(order_dow, labels = c(
+    "Sunday",
+    "Monday",
+    "Tuesday",
+    "Wednesday",
+    "Thursday",
+    "Friday",
+    "Saturday"
+  ))) |>
+  plot_ly(x = ~order_dow,
+          y = ~order_size,
+          color = ~order_dow, type = "box", colors = "viridis") |>
+  layout(title = "Dist. of Order Size by Day of Week",
+         xaxis = list(title = "Day of Week"),
+         yaxis = list(title = "Order Size"))
+  
+```
