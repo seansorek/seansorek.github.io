@@ -76,6 +76,7 @@ Now that we know what we have available, let's fit our data to the briere model.
 If the default model priors are satisfactory, fitting in `bayesTPC` can be done simply using `b_TPC()`.
 
 ```{r}
+#| cache: TRUE
 set.seed(1)
 fit1 <- b_TPC(data = data_list, model = "briere")
 fit1
@@ -113,6 +114,7 @@ If our model converged, we would see the parameters not move too much after an i
 Let's change our priors and set some reasonable initial values.
 
 ```{r}
+#| cache: TRUE
 fit2 <- b_TPC(data = data_list, model = "briere",
              priors = list(q = "dunif(0,.0003)",
                            T_min = "dunif(-5,10)",
@@ -203,6 +205,7 @@ cat(configure_model(my_briere))
 Now, let's train our briere model. 
 
 ```{r}
+#| cache: TRUE
 fit3 <- b_TPC(data = data_list, model = "my_briere")  
 ```
 

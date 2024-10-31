@@ -1,0 +1,7 @@
+---
+title: "`bayesTPC` Example 1: Changing Fitting Parameters"
+author: "Sean Sorek"
+format: html
+editor: source
+---
+
